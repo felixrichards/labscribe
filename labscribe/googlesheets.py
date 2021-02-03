@@ -10,8 +10,9 @@ def add_new_row(sheet, data):
 
 
 def update_row(sheet, cell, data):
-    for idx, d in enumerate(data):
-        sheet.update_cell(cell.row, cell.col + idx, data[idx])
+    a1 = f'{cell.address}:{gspread.utils.rowcol_to_a1(cell.row, cell.col + len(data))}'
+    data = [[d] for d in data]
+    sheet.update(a1, data, major_dimension='COLUMNS')
 
 
 def get_worksheet(sheet_name, worksheet_name):
