@@ -46,14 +46,16 @@ def init_metrics(sheet_name: str, exp_name: str, metric_keys: List[str], workshe
     return exp_row, phase_cols
 
 
-def upload_metrics(sheet_name: str, metrics: Dict[str, int], worksheet_name: Optional[str] = None, iter: Optional[int] = None, col: Optional[int] = 1) -> None:
+def upload_metrics(sheet_name: str, metrics: Dict[str, int], worksheet_name: Optional[str] = None, iter: Optional[int] = None, row: Optional[int] = None, col: Optional[int] = 1) -> None:
     """
     Upload metrics to googlesheets.
     """
     ws = get_worksheet(sheet_name, worksheet_name)
 
+    if row is None:
+        row = ws.cell(len(ws.col_values(col)) + 1, col)
     # Add data
-    update_row(ws, ws.cell(len(ws.col_values(col)) + 1, col), [iter] + list(metrics.values()))
+    update_row(ws, row, [iter] + list(metrics.values()))
 
 
 def begin_experiment(sheet_name: str, exp_name: str, args: Dict[str, int], worksheet_name: Optional[str] = None):
